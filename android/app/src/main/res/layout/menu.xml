@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Que voulez vous faire ?" />
+
+    <Button
+        android:id="@+id/menu_robot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Se connecter au robot" />
+
+    <Button
+        android:id="@+id/menu_commandes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Voir l'historique des commandes" />
+
+    <Button
+        android:id="@+id/menu_bogues"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Voir l'historique des bogues" />
+</LinearLayout>
