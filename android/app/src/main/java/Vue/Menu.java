@@ -20,11 +20,26 @@ public class Menu extends AppCompatActivity {
         //Association de chaque élément avec la vue
         menu_robot = (Button) findViewById(R.id.menu_robot);
         menu_commandes = (Button) findViewById(R.id.menu_commandes);
+        menu_bogues = (Button) findViewById(R.id.menu_bogues);
 
         //Création des listeners
         menu_robot.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent=new Intent().setClass(Menu.this, Connect.class);
+                startActivity(intent);
+            }
+        });
+
+        menu_commandes.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent=new Intent().setClass(Menu.this, Commandes.class);
+                startActivity(intent);
+            }
+        });
+
+        menu_bogues.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent=new Intent().setClass(Menu.this, Bogues.class);
                 startActivity(intent);
             }
         });

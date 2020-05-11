@@ -28,6 +28,21 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".Connect"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".Commandes"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".Bogues"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
