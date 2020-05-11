@@ -35,7 +35,7 @@ public class ControlPanelActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //Création de la vue sur l'application Android
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.content_main);
+        setContentView(R.layout.telecommande);
 
         //Association de chaque élément avec la vue
         BAvancer = (Button) findViewById(R.id.bAvancer);
@@ -194,6 +194,7 @@ public class ControlPanelActivity extends AppCompatActivity {
         BEteindre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 try {
                     BluetoothConnexion.envoyerMessage((byte) 7);
                 } catch (InterruptedException e) {

@@ -28,4 +28,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Voir l'historique des bogues" />
+
+    <Button
+        android:id="@+id/menu_deconnexion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deconnexion" />
 </LinearLayout>

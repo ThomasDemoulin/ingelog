@@ -11,6 +11,7 @@ public class Menu extends AppCompatActivity {
     Button menu_robot;
     Button menu_commandes;
     Button menu_bogues;
+    Button menu_deconnexion;
 
     protected void onCreate(Bundle savedInstanceState) {
         //Création de la vue sur l'application Android
@@ -21,6 +22,7 @@ public class Menu extends AppCompatActivity {
         menu_robot = (Button) findViewById(R.id.menu_robot);
         menu_commandes = (Button) findViewById(R.id.menu_commandes);
         menu_bogues = (Button) findViewById(R.id.menu_bogues);
+        menu_deconnexion = (Button) findViewById(R.id.menu_deconnexion);
 
         //Création des listeners
         menu_robot.setOnClickListener( new View.OnClickListener() {
@@ -41,6 +43,12 @@ public class Menu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent().setClass(Menu.this, Bogues.class);
                 startActivity(intent);
+            }
+        });
+
+        menu_deconnexion.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
             }
         });
     }

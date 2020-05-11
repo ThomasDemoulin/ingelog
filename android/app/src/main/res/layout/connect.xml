@@ -6,9 +6,21 @@
     android:orientation="vertical">
 
     <Button
+        android:id="@+id/connect_retour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Retour" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/connect_mac"
+        android:hint="adresse mac du robot">
+    </EditText>
+
+    <Button
         android:id="@+id/connect_connexion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Connexion"
-        android:layout_marginTop="100dp"/>
+        android:text="Connexion"/>
 </LinearLayout>
