@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.GoodieBag:ProtractorView:v1.2@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ea5d1d444449a0613d8a956ab97808df/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ea5d1d444449a0613d8a956ab97808df/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.GoodieBag/ProtractorView/v1.2/5b1ef53ebf618fa5d88fdf586925975b53c30877/ProtractorView-v1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
