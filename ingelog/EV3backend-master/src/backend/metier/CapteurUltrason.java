@@ -1,7 +1,7 @@
-package backend;
+package backend.metier;
+import backend.controller.VehiculeController;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
-import backend.VehiculeController;
 
 public class CapteurUltrason extends Thread {
 
@@ -13,7 +13,6 @@ public class CapteurUltrason extends Thread {
     private final SampleProvider distanceMode;
     private final float[] distanceSample;
     private VehiculeController controller;
-    private boolean contact;
 
     public CapteurUltrason(EV3UltrasonicSensor capteur) {
         /**
@@ -25,7 +24,6 @@ public class CapteurUltrason extends Thread {
         this.capteur.enable();
         this.distanceMode = this.capteur.getDistanceMode();
         distanceSample = new float[distanceMode.sampleSize()];
-        this.contact = false;
     }
     
 	@Override
@@ -33,7 +31,7 @@ public class CapteurUltrason extends Thread {
 		while ( controller.isModeAutoActif() ) {
 			if( this.isTooClose() ) {
 				try {
-					this.controller.sauverDistance();
+					this.controller.obstacleDetecte();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

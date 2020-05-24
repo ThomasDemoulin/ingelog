@@ -1,6 +1,6 @@
-package backend;
+package tests;
 
-import backend.VehiculeController;
+import backend.controller.VehiculeController;
 import junit.framework.*;
 
 //ajout getspeed et ajout variable vitesse = 0
@@ -17,9 +17,9 @@ public class MainRobotEV3Test extends TestCase{
 	 */
 	public void testAvancer() throws Exception {
 		VehiculeController ctrl = new VehiculeController();
-		int oldSpeed = ctrl.getSpeed();
+		int oldSpeed = ctrl.getVitesse();
 		ctrl.decelerer();
-		assertTrue(oldSpeed < ctrl.getSpeed());
+		assertTrue(oldSpeed < ctrl.getVitesse());
 	}
 
 	/*
@@ -31,7 +31,7 @@ public class MainRobotEV3Test extends TestCase{
 	public void testReculer() throws Exception {
 		VehiculeController ctrl = new VehiculeController();
 		ctrl.reculer();
-		assertEquals(10, ctrl.getSpeed());
+		assertEquals(10, ctrl.getVitesse());
 	}
 		
 	/*
@@ -44,9 +44,9 @@ public class MainRobotEV3Test extends TestCase{
 	 */
 	public void testDecelerer() throws Exception {
 		VehiculeController ctrl = new VehiculeController();
-		int oldSpeed = ctrl.getSpeed();
+		int oldSpeed = ctrl.getVitesse();
 		ctrl.decelerer();
-		assertTrue(oldSpeed > ctrl.getSpeed());
+		assertTrue(oldSpeed > ctrl.getVitesse());
 	}
 	
 	/*
@@ -57,7 +57,7 @@ public class MainRobotEV3Test extends TestCase{
 	public void testStop() throws Exception {
 		VehiculeController ctrl = new VehiculeController();
 		ctrl.stop();
-		assertEquals(0, ctrl.getSpeed());
+		assertEquals(0, ctrl.getVitesse());
 	}
 }
 

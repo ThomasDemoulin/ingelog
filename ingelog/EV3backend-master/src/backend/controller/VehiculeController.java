@@ -1,19 +1,22 @@
-package backend;
+package backend.controller;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 import lejos.hardware.port.MotorPort;
-import lejos.hardware.port.Port;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.RegulatedMotor;
 
 import java.util.ArrayList;
 
-import backend.CapteurUltrason;
+import org.apache.log4j.Logger;
+
+//import backend.MainRobotEV3;
+import backend.metier.CapteurUltrason;
+import backend.metier.Moteur;
 import etats.EtatArret;
 import etats.EtatAvance;
-import etats.EtatRecul;
+import etats.EtatRecule;
 import etats.EtatRobot;
 
 /**
@@ -30,10 +33,11 @@ public class VehiculeController extends Thread {
 	Moteur moteurDroit;
 	Moteur moteurGauche;
 
-    int speed;
-    int angle;
-    CapteurUltrason myCapteur;
+    int vitesse;
+    CapteurUltrason capteurDistance;
     boolean isModeAutoActif; 
+    
+//    private String loginUtilisateur;
     
     private EtatRobot etatCourant;
     private EtatRobot etatArret;
@@ -41,30 +45,31 @@ public class VehiculeController extends Thread {
     private EtatRobot etatRecul;
     
     private ArrayList<EtatRobot> arrayEtat;
+    
+    final static Logger logger = Logger.getLogger(backend.controller.VehiculeController.class);
  
     public VehiculeController()
 	{
         /**
          * Initialisation des composants
          */
-    	this.speed = 50;
-    	this.moteurDroit 	= new Moteur(new EV3LargeRegulatedMotor(MotorPort.A), this.speed);
-    	this.moteurGauche 	= new Moteur(new EV3LargeRegulatedMotor(MotorPort.B), this.speed);
+    	this.vitesse = 50;
+    	this.moteurDroit 	= new Moteur(new EV3LargeRegulatedMotor(MotorPort.A), this.vitesse);
+    	this.moteurGauche 	= new Moteur(new EV3LargeRegulatedMotor(MotorPort.B), this.vitesse);
     	
-    	this.myCapteur = new CapteurUltrason( new EV3UltrasonicSensor(SensorPort.S3));
-    	this.myCapteur.setController(this);
+    	this.capteurDistance = new CapteurUltrason( new EV3UltrasonicSensor(SensorPort.S3));
+    	this.capteurDistance.setController(this);
     	
     	RegulatedMotor sync[] = {this.moteurDroit.getMoteur()};
     	this.moteurGauche.getMoteur().synchronizeWith(sync);
     	
-    	this.angle = 10;
     	this.isModeAutoActif = false;
     	
     	this.etatCourant 	= new EtatArret();
     	
     	this.etatArret 		= new EtatArret();
     	this.etatAvance		= new EtatAvance();
-    	this.etatRecul		= new EtatRecul();
+    	this.etatRecul		= new EtatRecule();
     	
     	this.arrayEtat = new ArrayList<EtatRobot>();
  
@@ -75,10 +80,10 @@ public class VehiculeController extends Thread {
     	
     	if(	etatCourant instanceof EtatArret ) {
     		
-    		this.speed = 50;
+    		this.vitesse = 50;
     		
-    		this.moteurGauche.avancer(this.speed);
-    		this.moteurDroit.avancer(this.speed);
+    		this.moteurGauche.avancer(this.vitesse);
+    		this.moteurDroit.avancer(this.vitesse);
     		
     		etatCourant = etatAvance;
     		sauverEtat(etatCourant);
@@ -98,13 +103,13 @@ public class VehiculeController extends Thread {
     public void reculer() throws InterruptedException {
     	this.moteurGauche.getMoteur().startSynchronization();
 
-    	this.speed = 50;
+    	this.vitesse = 50;
     	if(this.moteurDroit.enAction() && this.moteurGauche.enAction()) {
     		this.moteurGauche.stop();
     		this.moteurDroit.stop();
     	}
-  		this.moteurDroit.reculer(this.speed);
-		this.moteurGauche.reculer(this.speed);
+  		this.moteurDroit.reculer(this.vitesse);
+		this.moteurGauche.reculer(this.vitesse);
 		
 		etatCourant = etatRecul;
 		sauverEtat(etatCourant);
@@ -115,37 +120,33 @@ public class VehiculeController extends Thread {
 
     public void tournerDroite() throws InterruptedException {
     	
-//    	this.moteurGauche.getMoteur().startSynchronization();
-    	int oldSpeed = this.moteurGauche.getVitesse();
+    	int oldVitesse = this.moteurGauche.getVitesse();
     	
     	if(	etatCourant instanceof EtatAvance ) {
-        	this.moteurGauche.tournerEnAvant();
-        	this.moteurGauche.avancer(oldSpeed);
-        	this.moteurDroit.avancer(oldSpeed);
+        	this.moteurGauche.tourner();
+        	this.moteurGauche.avancer(oldVitesse);
+        	this.moteurDroit.avancer(oldVitesse);
         	
-    	}else if(etatCourant instanceof EtatRecul) {
-    		this.moteurGauche.tournerEnArriere();
-        	this.moteurGauche.reculer(oldSpeed);
-        	this.moteurDroit.reculer(oldSpeed);
+    	}else if(etatCourant instanceof EtatRecule) {
+    		this.moteurGauche.tourner();
+        	this.moteurGauche.reculer(oldVitesse);
+        	this.moteurDroit.reculer(oldVitesse);
     	}
-    	
-//    	this.moteurGauche.getMoteur().endSynchronization();
-
     }
 
     public void tournerGauche() throws InterruptedException {
     	
-    	int oldSpeed = this.moteurDroit.getVitesse();
+    	int oldVitesse = this.moteurDroit.getVitesse();
 
     	if(	etatCourant instanceof EtatAvance ) {
-	    	this.moteurDroit.tournerEnAvant();
-			this.moteurDroit.avancer(oldSpeed);
-			this.moteurGauche.avancer(oldSpeed);
+	    	this.moteurDroit.tourner();
+			this.moteurDroit.avancer(oldVitesse);
+			this.moteurGauche.avancer(oldVitesse);
 			
-    	}else if(etatCourant instanceof EtatRecul) {
-	    	this.moteurDroit.tournerEnArriere();
-			this.moteurDroit.reculer(oldSpeed);
-			this.moteurGauche.reculer(oldSpeed);
+    	}else if(etatCourant instanceof EtatRecule) {
+	    	this.moteurDroit.tourner();
+			this.moteurDroit.reculer(oldVitesse);
+			this.moteurGauche.reculer(oldVitesse);
     	}
 
     }
@@ -182,31 +183,29 @@ public class VehiculeController extends Thread {
     public void auto() throws InterruptedException {
     	this.isModeAutoActif = true;
 
-    	myCapteur.start();
-    	while(myCapteur.isTooClose()) {}
+    	capteurDistance.start();
+    	while(capteurDistance.isTooClose()) {}
     	
     	this.avancer();
     }
 
-	public int getSpeed() {
-		return this.speed;
+	public int getVitesse() {
+		return this.vitesse;
 	}
 	
 	public void sauverEtat(EtatRobot etatCourantRobot) {
 		arrayEtat.add(etatCourantRobot);
+		logger.info(etatCourantRobot.getEtat());
 	}
 	
 	public EtatRobot getEtat() {
 		return this.etatCourant;
 	}
 	
-	public void sauverDistance()throws InterruptedException {
-		distance();
-	}
-	
-	public void distance() throws InterruptedException  {
+	public void obstacleDetecte()throws InterruptedException {
 		if(etatCourant instanceof EtatAvance) {
 			this.tournerDroite();
 		}
 	}
+	
  }

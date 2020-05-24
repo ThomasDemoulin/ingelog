@@ -1,4 +1,4 @@
-package backend;
+package backend.metier;
 
 import lejos.robotics.RegulatedMotor;
 
@@ -14,11 +14,6 @@ public class Moteur {
 		// Constructeur
 		this.moteur = moteur;
 		this.vitesse = v;
-	}
-
-	public void avancer(int v){
-		this.setVitesse(v);
-		this.moteur.forward();
 	}
 	
 	public void setVitesse(int v) {
@@ -36,6 +31,11 @@ public class Moteur {
 	
 	public boolean enAction() {
 		return this.moteur.isMoving();
+	}
+	
+	public void avancer(int v){
+		this.setVitesse(v);
+		this.moteur.forward();
 	}
 
 	public void reculer(int v){
@@ -68,16 +68,7 @@ public class Moteur {
 		}
 	}
 
-	public void tournerEnAvant() throws InterruptedException {
-		if(this.moteur.isMoving()) {
-	    	int oldSpeed = this.moteur.getSpeed();
-	    	int newSpeed = (oldSpeed + this.vitesse)*2;
-	    	this.moteur.setSpeed(newSpeed);
-	    	Thread.sleep(1000);
-		}
-	}
-	
-	public void tournerEnArriere() throws InterruptedException {
+	public void tourner() throws InterruptedException {
 		if(this.moteur.isMoving()) {
 	    	int oldSpeed = this.moteur.getSpeed();
 	    	int newSpeed = (oldSpeed + this.vitesse)*2;

@@ -2,10 +2,19 @@ package backend;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import org.apache.log4j.Logger;
+
+import backend.controller.LogController;
+
+//import org.apache.log4j.Logger;
+
+//import backend.controller.LogController;
+import backend.controller.VehiculeController;
 import lejos.hardware.Bluetooth;
 import lejos.remote.nxt.BTConnection;
 import lejos.remote.nxt.BTConnector;
-import lejos.remote.nxt.NXTConnection;;
+import lejos.remote.nxt.NXTConnection;
 
 
 
@@ -15,12 +24,16 @@ public class MainRobotEV3 {
 	private static DataInputStream in;
 	private static BTConnection BTConnect;
 	private static int commande=0;
+
+	final static Logger logger = Logger.getLogger(MainRobotEV3.class);
+	
 	public static void main(String[] args) throws InterruptedException {
     	connect();
 
     	boolean stop_app = true;
-    	VehiculeController ctrl = new VehiculeController();
-
+    	VehiculeController vehiculeCrl = new VehiculeController();
+    	LogController logCtrl = new LogController(logger);
+    	
     	while(stop_app)
     	{
     		try {
@@ -28,14 +41,14 @@ public class MainRobotEV3 {
 				switch(commande)
 				{
     				case 1: 
-				    	ctrl.avancer();
+    					vehiculeCrl.avancer();
 	    				break;
     				case 2:
-    					ctrl.reculer();
+    					vehiculeCrl.reculer();
     					break;
     				case 3:
 					try {
-						ctrl.tournerDroite();
+						vehiculeCrl.tournerDroite();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -43,17 +56,17 @@ public class MainRobotEV3 {
     					break;
     				case 4:
 					try {
-						ctrl.tournerGauche();
+						vehiculeCrl.tournerGauche();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
     					break;
     				case 5:
-    					ctrl.decelerer();
+    					vehiculeCrl.decelerer();
     					break;
     				case 6:
-    					ctrl.arret();
+    					vehiculeCrl.arret();
     					break;
     				case 7 :
     					stop_app = false;
@@ -62,7 +75,10 @@ public class MainRobotEV3 {
     					break;
     					
     				case 8:
-    					ctrl.auto();
+    					vehiculeCrl.auto();
+    					break;
+    				case 9:
+//    					logCtrl.getLog();
     					break;
 				}
     		}catch (IOException ioe) {

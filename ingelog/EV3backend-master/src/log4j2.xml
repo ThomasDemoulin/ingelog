@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration package="log4j.test" 
+               status="WARN">
+    <Appenders>
+    	<Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5level %logger{36} - %msg%n"/>
+        </Console>
+        <File name="LogToFile" fileName="app.log">
+      		<PatternLayout>
+      	 		<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+      		</PatternLayout>
+    	</File>
+    	
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Root>
+    </Loggers>
+</Configuration>

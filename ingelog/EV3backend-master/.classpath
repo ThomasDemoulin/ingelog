@@ -3,7 +3,10 @@
 	<classpathentry kind="con" path="org.lejos.ev3.ldt.LEJOS_EV3_LIBRARY_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
-	<classpathentry kind="lib" path="C:/Developpement/lib/lejosunit-1.0.2-complete.jar"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="lib" path="C:/Developpement/apache-log4j-2.3-bin/log4j-1.2-api-2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Developpement/apache-log4j-2.3-bin/log4j-api-2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Developpement/apache-log4j-2.3-bin/log4j-core-2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/arthu/.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
