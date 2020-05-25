@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Control_EV3</string>
     <string name="action_settings">Settings</string>
+    <string name="choix_menu"><u>Que voulez vous faire ?</u></string>
+    <string name="titre_historique_commandes"><u>Historique des commandes :</u></string>
+    <string name="titre_historique_bogues"><u>Historique des bogues :</u></string>
 </resources>
