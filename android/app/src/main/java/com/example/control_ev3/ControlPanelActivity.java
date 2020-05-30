@@ -46,8 +46,7 @@ public class ControlPanelActivity extends AppCompatActivity {
         BGauche = (ImageButton) findViewById(R.id.bGauche);
         BDroite = (ImageButton) findViewById(R.id.bDroite);
         BEteindre = (Button) findViewById(R.id.bEteindre);
-        //Speedometer = (SpeedView) findViewById(R.id.speedView);
-        Speedometer = null;
+        Speedometer = (SpeedView) findViewById(R.id.speedView);
         modeAuto = (Switch) findViewById(R.id.modeAuto);
 
 

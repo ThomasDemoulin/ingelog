@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
-import android.widget.TextView;
-
 import com.github.anastr.speedviewlib.SpeedView;
 import Controleur.BriqueControleur;
 
@@ -28,9 +26,11 @@ public class Telecommande extends AppCompatActivity {
     ImageButton BDroite ;
     Switch modeAuto;
     //Création de la vue de la vitesse
-    TextView vitesseRobot;
+    SpeedView Speedometer ;
     //Initialisation de la vitesse de départ à 0
-    int vitesse = 0;
+    //Distinction de la vitesse pour avancer et de la vitesse pour reculer
+    int vitesseAvancer = 0;
+    int vitesseReculer = 0;
 
     protected void onCreate(Bundle savedInstanceState) {
         //Création de la vue sur l'application Android
@@ -46,7 +46,7 @@ public class Telecommande extends AppCompatActivity {
         BGauche = (ImageButton) findViewById(R.id.bGauche);
         BDroite = (ImageButton) findViewById(R.id.bDroite);
         BEteindre = (Button) findViewById(R.id.bEteindre);
-        vitesseRobot = (TextView) findViewById(R.id.vitesseRobot);
+        Speedometer = (SpeedView) findViewById(R.id.speedView);
         modeAuto = (Switch) findViewById(R.id.modeAuto);
 
 
@@ -55,59 +55,71 @@ public class Telecommande extends AppCompatActivity {
         briqueControleur.connexionEV3();
 
         //Création d'un listener sur le bouton Avancer
-        //On peut également accélérer grâce au bouton Avancer
+        //On peux également accélérer grâce au bouton Avancer
         BAvancer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (vitesse == 0 || vitesse == -1) {
-                    vitesse = 1;
-                    vitesseRobot.setText("Vitesse 1");
-                    try {
-                        briqueControleur.envoyerMessage((byte) 1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                }
+                vitesseAvancer = vitesseAvancer + 10;
+                vitesseReculer = 0;
+                Speedometer.speedTo(vitesseAvancer);
+
+                try {
+                    briqueControleur.envoyerMessage((byte) 1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
 
         //Création d'un listener sur le bouton Accelerer
-        //La vitesse augmente si le robot avance et si celui-ci n'a pas atteint la vitesse maximale
+        //La vitesse augmente de 10 en 10
         BAccelerer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (vitesse > 0 && vitesse <= 4) {
-                    vitesse += 1;
-                    vitesseRobot.setText("Vitesse " + vitesse);
-                    try {
-                        briqueControleur.envoyerMessage((byte) 1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                if (vitesseReculer != 0) {
+                    vitesseReculer = vitesseReculer + 10;
+                    vitesseAvancer = 0;
+                    Speedometer.speedTo(vitesseReculer);
+                }
+                else {
+                    vitesseAvancer = vitesseAvancer + 10;
+                    vitesseReculer = 0;
+                    Speedometer.speedTo(vitesseAvancer);
+                }
+                try {
+                    briqueControleur.envoyerMessage((byte) 1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
 
 
         //Création d'un listener sur le bouton Ralentir
-        //La vitesse diminue si le robot avance et si celui-ci n'a pas atteint la vitesse minimale
+        //La vitesse diminue de 10 en 10
         BRalentir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (vitesse > 1 && vitesse <= 5) {
-                    vitesse -= 1;
-                    vitesseRobot.setText("Vitesse " + vitesse);
-                    try {
-                        briqueControleur.envoyerMessage((byte) 5);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                if (vitesseReculer != 0) {
+                    vitesseReculer = vitesseReculer - 10;
+                    vitesseAvancer = 0;
+                    Speedometer.speedTo(vitesseReculer);
+                }
+                else {
+                    vitesseAvancer = vitesseAvancer - 10;
+                    vitesseReculer = 0;
+                    Speedometer.speedTo(vitesseAvancer);
+                }
+                try {
+                    briqueControleur.envoyerMessage((byte) 5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -117,16 +129,16 @@ public class Telecommande extends AppCompatActivity {
         BReculer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (vitesse >= 0 ) {
-                    vitesse = -1;
-                    vitesseRobot.setText("Vitesse -1");
-                    try {
-                        briqueControleur.envoyerMessage((byte) 2);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                vitesseReculer = vitesseReculer + 10;
+                vitesseAvancer = 0;
+                Speedometer.speedTo(vitesseReculer);
+
+                try {
+                    briqueControleur.envoyerMessage((byte) 2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -165,16 +177,15 @@ public class Telecommande extends AppCompatActivity {
         BArreter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (vitesse != 0) {
-                    vitesse = 0;
-                    vitesseRobot.setText("Vitesse 0");
-                    try {
-                        briqueControleur.envoyerMessage((byte) 6);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                vitesseReculer = 0;
+                vitesseAvancer = 0;
+                Speedometer.speedTo(0);
+                try {
+                    briqueControleur.envoyerMessage((byte) 6);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
