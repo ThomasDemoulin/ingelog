@@ -16,6 +16,10 @@ public class Connect extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.connect);
 
+        //Récupération de l'intent
+        Intent intent = getIntent();
+        final Boolean admin = intent.getBooleanExtra("admin",true);
+
         //Association de chaque élément avec la vue
         connect_connexion = (Button) findViewById(R.id.connect_connexion);
         connect_retour = (Button) findViewById(R.id.connect_retour);
@@ -24,6 +28,7 @@ public class Connect extends AppCompatActivity {
         connect_connexion.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent=new Intent().setClass(Connect.this, Telecommande.class);
+                intent.putExtra("admin", admin);
                 startActivity(intent);
             }
         });

@@ -116,5 +116,13 @@
             android:id="@+id/vitesseRobot"
             android:layout_marginTop="530dp"
             android:layout_marginLeft="75dp"/>
+        <Button
+            android:text="Voir l'historique des commandes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bHistorique"
+            android:layout_marginTop="630dp"
+            android:layout_marginLeft="70dp"
+            />
     </RelativeLayout>
 </LinearLayout>

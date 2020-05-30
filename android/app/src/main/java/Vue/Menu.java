@@ -16,7 +16,17 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         //Création de la vue sur l'application Android
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu);
+
+        //Récupération de l'intent
+        Intent intent = getIntent();
+        final Boolean admin = intent.getBooleanExtra("admin",true);
+
+        //On charge le layout admin ou user en fonction de l'intent
+        if(admin){
+            setContentView(R.layout.menu_admin);
+        }else{
+            setContentView(R.layout.menu_user);
+        }
 
         //Association de chaque élément avec la vue
         menu_robot = (Button) findViewById(R.id.menu_robot);
@@ -28,23 +38,26 @@ public class Menu extends AppCompatActivity {
         menu_robot.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent=new Intent().setClass(Menu.this, Connect.class);
+                intent.putExtra("admin", admin);
                 startActivity(intent);
             }
         });
 
-        menu_commandes.setOnClickListener( new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent=new Intent().setClass(Menu.this, Commandes.class);
-                startActivity(intent);
-            }
-        });
+        if(admin) {
+            menu_commandes.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent().setClass(Menu.this, Commandes.class);
+                    startActivity(intent);
+                }
+            });
 
-        menu_bogues.setOnClickListener( new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent=new Intent().setClass(Menu.this, Bogues.class);
-                startActivity(intent);
-            }
-        });
+            menu_bogues.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent().setClass(Menu.this, Bogues.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
         menu_deconnexion.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {

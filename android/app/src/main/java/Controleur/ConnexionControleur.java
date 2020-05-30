@@ -11,6 +11,19 @@ public class ConnexionControleur {
         connexionBase = new ConnexionBase(context);
     }
 
+    public Boolean verifierIdentifiants(String login, String mdp){
+        String mdpBase = connexionBase.getMotDePasse(login);
+        if(mdpBase == null){
+            return false;
+        }else{
+            if(mdpBase.equals(mdp)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
     public ConnexionBase getConnexionBase() {
         return connexionBase;
     }

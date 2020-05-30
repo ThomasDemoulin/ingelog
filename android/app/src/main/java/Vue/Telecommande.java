@@ -1,5 +1,7 @@
 package Vue;
 
+import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +15,8 @@ import com.github.anastr.speedviewlib.SpeedView;
 import Controleur.BriqueControleur;
 
 import java.io.IOException;
+
+import static android.widget.RelativeLayout.*;
 
 public class Telecommande extends AppCompatActivity {
 
@@ -31,11 +35,16 @@ public class Telecommande extends AppCompatActivity {
     TextView vitesseRobot;
     //Initialisation de la vitesse de départ à 0
     int vitesse = 0;
+    Button BHistorique;
 
     protected void onCreate(Bundle savedInstanceState) {
         //Création de la vue sur l'application Android
         super.onCreate(savedInstanceState);
         setContentView(R.layout.telecommande);
+
+        //Récupération de l'intent
+        Intent intent = getIntent();
+        final Boolean admin = intent.getBooleanExtra("admin",true);
 
         //Association de chaque élément avec la vue
         BAvancer = (Button) findViewById(R.id.bAvancer);
@@ -48,7 +57,12 @@ public class Telecommande extends AppCompatActivity {
         BEteindre = (Button) findViewById(R.id.bEteindre);
         vitesseRobot = (TextView) findViewById(R.id.vitesseRobot);
         modeAuto = (Switch) findViewById(R.id.modeAuto);
+        BHistorique = (Button) findViewById(R.id.bHistorique);
 
+        //On cache le bouton historique si ce n'est pas un admin
+        if(!admin){
+            BHistorique.setVisibility(View.GONE);
+        }
 
         //Création de la connexion Bluetooth
         briqueControleur = new BriqueControleur();
@@ -216,6 +230,14 @@ public class Telecommande extends AppCompatActivity {
             }
         });
 
+        if(admin) {
+            BHistorique.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = new Intent().setClass(Telecommande.this, Commandes.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
     }
 

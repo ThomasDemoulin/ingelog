@@ -24,25 +24,39 @@ public class ConnexionBase {
         bd.execSQL(requete);
     }
 
-    public Utilisateur getUtilisateur(String id){
-        Utilisateur util = new Utilisateur();
+    public Utilisateur getUtilisateur(String log){
         bd = accesBD.getReadableDatabase();
-        String req = "select * from utilisateurs where login = \"" + id + "\";";
-        Cursor curseur = bd.rawQuery(req, null);
-        String login = curseur.getString(0);
-        int ad = curseur.getInt(2);
-        Boolean admin = false;
-        if(ad != 0){
-            admin = true;
+        Utilisateur u = null;
+        String req = "select * from utilisateurs where login = \'" + log + "\';";
+        Cursor c = bd.rawQuery(req, null);
+        if(c != null && c.getCount()>0) {
+            c.moveToLast();
+            if (!c.isAfterLast()) {
+                String id = c.getString(0);
+                int ad = c.getInt(2);
+                Boolean admin = false;
+                if (ad != 0) admin = true;
+                u = new Utilisateur();
+                u.setIdentifiant(id);
+                u.setAdmin(admin);
+            }
         }
-        util.setAdmin(admin);
-        util.setIdentifiant(login);
-        return util;
+        c.close();
+        return u;
     }
 
-    public String login(String id){
+    public String getMotDePasse(String log){
+        String mdp = null;
         bd = accesBD.getReadableDatabase();
-        String req = "select * from utilisateurs where login = \"" + id + "\";";
-        return "";
+        String req = "select * from utilisateurs where login = \'" + log + "\';";
+        Cursor c = bd.rawQuery(req, null);
+        if(c != null) {
+            c.moveToLast();
+            if (!c.isAfterLast()) {
+                mdp = c.getString(1);
+            }
+        }
+        c.close();
+        return mdp;
     }
 }
