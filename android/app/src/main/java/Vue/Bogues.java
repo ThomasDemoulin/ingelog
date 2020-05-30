@@ -2,16 +2,11 @@ package Vue;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.IOException;
-
-import Controleur.BriqueControleur;
-
 public class Bogues extends AppCompatActivity {
-    BriqueControleur briqueControleur;
+
     Button bogues_retour;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,15 +16,6 @@ public class Bogues extends AppCompatActivity {
 
         //Association de chaque élément avec la vue
         bogues_retour = (Button) findViewById(R.id.bogues_retour);
-
-        try {
-            briqueControleur.envoyerMessage((byte) 9);
-            briqueControleur.recevoirMessage();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         //Création des listeners
         bogues_retour.setOnClickListener( new View.OnClickListener() {
