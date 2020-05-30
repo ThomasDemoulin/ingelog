@@ -2,8 +2,10 @@ package Controleur;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
 import android.bluetooth.BluetoothDevice;
+import android.util.Log;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import static java.util.UUID.fromString;
@@ -55,5 +57,20 @@ public class BriqueControleur<booleen> {
         outputMessage.write(message);
         outputMessage.flush();
         Thread.sleep(1000);
+    }
+
+    public int recevoirMessage() throws InterruptedException, IOException {
+        InputStreamReader inputMessage = new InputStreamReader(socketEV3.getInputStream(),"UTF-8");
+
+        int c = inputMessage.read();
+        
+        // en UTF-8 le premier octet indique le codage
+        c = inputMessage.read();
+        while(c != -1){
+            Log.e("COUCOU", (char)c + "");
+            c = inputMessage.read();
+        }
+
+        return inputMessage.read();
     }
 }
