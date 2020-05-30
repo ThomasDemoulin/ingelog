@@ -29,15 +29,15 @@ public class MainRobotEV3 {
 	
 	public static void main(String[] args) throws InterruptedException {
     	connect();
-
     	boolean stop_app = true;
     	VehiculeController vehiculeCrl = new VehiculeController();
-    	LogController logCtrl = new LogController(logger);
+    	//LogController logCtrl = new LogController(logger);
     	
     	while(stop_app)
     	{
     		try {
 				commande = (int) in.readByte();
+				System.out.println(commande);
 				switch(commande)
 				{
     				case 1: 

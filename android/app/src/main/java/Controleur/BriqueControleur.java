@@ -37,7 +37,7 @@ public class BriqueControleur<booleen> {
         activationBluetooth();
 
         //Saisir l'adresse MAC de la brique EV3
-        String adresseMAC = "00:16:53:56:5F:C2";
+        String adresseMAC = "00:16:53:80:46:E8";
         //Récupérer le périphérique EV3
         BluetoothDevice EV3 = bluetoothAdapter.getRemoteDevice(adresseMAC);
 
