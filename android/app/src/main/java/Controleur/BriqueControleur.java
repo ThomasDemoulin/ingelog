@@ -2,6 +2,8 @@ package Controleur;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
 import android.bluetooth.BluetoothDevice;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.io.IOException;
@@ -15,13 +17,44 @@ import static java.util.UUID.fromString;
  *
  * https://stackoverflow.com/questions/4969053/bluetooth-connection-between-android-and-lego-mindstorm-nxt
  */
-public class BriqueControleur<booleen> {
+public class BriqueControleur implements Parcelable {
 
-    //Création des éléments de connection
-
+    //Création des éléments de connexion
     static boolean connexionSucces = true;
     public static BluetoothAdapter bluetoothAdapter;
     private static BluetoothSocket socketEV3;
+
+    private String adresseMAC;
+
+    public BriqueControleur(String adresseMAC) {
+        this.adresseMAC = adresseMAC;
+    }
+
+    public String getAdresseMAC() {
+        return adresseMAC;
+    }
+
+    public void setAdresseMAC(String adresseMAC) {
+        this.adresseMAC = adresseMAC;
+    }
+
+    /////////////////Parcelable/////////////////
+    protected BriqueControleur(Parcel in) {
+        adresseMAC = in.readString();
+    }
+
+    public static final Creator<BriqueControleur> CREATOR = new Creator<BriqueControleur>() {
+        @Override
+        public BriqueControleur createFromParcel(Parcel in) {
+            return new BriqueControleur(in);
+        }
+
+        @Override
+        public BriqueControleur[] newArray(int size) {
+            return new BriqueControleur[size];
+        }
+    };
+    /////////////////Fin Parcelable/////////////////
 
     //Activer la connexion Bluetooth si elle n'est pas déjà active
     public static void activationBluetooth() {
@@ -33,13 +66,11 @@ public class BriqueControleur<booleen> {
     }
 
     //Connexion à la brique EV3
-    public static boolean connexionEV3() {
+    public boolean connexionEV3() {
         activationBluetooth();
 
-        //Saisir l'adresse MAC de la brique EV3
-        String adresseMAC = "00:16:53:80:46:E8";
         //Récupérer le périphérique EV3
-        BluetoothDevice EV3 = bluetoothAdapter.getRemoteDevice(adresseMAC);
+        BluetoothDevice EV3 = bluetoothAdapter.getRemoteDevice(getAdresseMAC());
 
         //Connexion à la brique EV3
         try {
@@ -73,4 +104,16 @@ public class BriqueControleur<booleen> {
 
         return inputMessage.read();
     }
+
+    /////////////////Parcelable/////////////////
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(adresseMAC);
+    }
+    /////////////////Fin Parcelable/////////////////
 }

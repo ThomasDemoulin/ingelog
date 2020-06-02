@@ -21,7 +21,6 @@ import static android.widget.RelativeLayout.*;
 public class Telecommande extends AppCompatActivity {
 
     //Création des différents boutons et de la connexion
-    BriqueControleur briqueControleur;
     Button BAvancer ;
     Button BReculer ;
     Button BAccelerer ;
@@ -45,6 +44,7 @@ public class Telecommande extends AppCompatActivity {
         //Récupération de l'intent
         Intent intent = getIntent();
         final Boolean admin = intent.getBooleanExtra("admin",true);
+        final BriqueControleur briqueControleur = intent.getParcelableExtra("briqueControleur");
 
         //Association de chaque élément avec la vue
         BAvancer = (Button) findViewById(R.id.bAvancer);
@@ -63,10 +63,6 @@ public class Telecommande extends AppCompatActivity {
         if(!admin){
             BHistorique.setVisibility(View.GONE);
         }
-
-        //Création de la connexion Bluetooth
-        briqueControleur = new BriqueControleur();
-        briqueControleur.connexionEV3();
 
         //Création d'un listener sur le bouton Avancer
         //On peut également accélérer grâce au bouton Avancer

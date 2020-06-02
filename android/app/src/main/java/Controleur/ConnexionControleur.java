@@ -16,11 +16,7 @@ public class ConnexionControleur {
         if(mdpBase == null){
             return false;
         }else{
-            if(mdpBase.equals(mdp)){
-                return true;
-            }else{
-                return false;
-            }
+            return mdpBase.equals(mdp);
         }
     }
 
