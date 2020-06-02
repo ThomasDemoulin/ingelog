@@ -195,7 +195,7 @@ public class VehiculeController extends Thread {
 	
 	public void sauverEtat(EtatRobot etatCourantRobot) {
 		arrayEtat.add(etatCourantRobot);
-		logger.info(etatCourantRobot.getEtat());
+//		logger.info(etatCourantRobot.getEtat());
 	}
 	
 	public EtatRobot getEtat() {

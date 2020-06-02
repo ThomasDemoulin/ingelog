@@ -33,11 +33,12 @@ public class MainRobotEV3 {
     	VehiculeController vehiculeCrl = new VehiculeController();
     	//LogController logCtrl = new LogController(logger);
     	
+    	final Logger logger = Logger.getLogger(backend.controller.VehiculeController.class);
+    	
     	while(stop_app)
     	{
     		try {
 				commande = (int) in.readByte();
-				System.out.println(commande);
 				switch(commande)
 				{
     				case 1: 
@@ -79,6 +80,8 @@ public class MainRobotEV3 {
     					break;
     				case 9:
 //    					logCtrl.getLog();
+//    					out.writeChars("BITE");
+    					logger.error("test");
     					break;
 				}
     		}catch (IOException ioe) {
