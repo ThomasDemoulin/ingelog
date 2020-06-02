@@ -33,7 +33,8 @@
         android:hint="Mot de passe"
         app:layout_constraintBottom_toTopOf="@+id/login_connexion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/login_connexion"
