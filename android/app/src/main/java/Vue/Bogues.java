@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -13,6 +14,7 @@ import Controleur.BriqueControleur;
 
 public class Bogues extends AppCompatActivity {
     Button bogues_retour;
+    TextView bogues_text;
 
     protected void onCreate(Bundle savedInstanceState) {
         //Création de la vue sur l'application Android
@@ -25,10 +27,9 @@ public class Bogues extends AppCompatActivity {
 
         //Association de chaque élément avec la vue
         bogues_retour = (Button) findViewById(R.id.bogues_retour);
-
+        bogues_text = (TextView) findViewById(R.id.bogues_text);
         try {
-            briqueControleur.envoyerMessage((byte) 9);
-            briqueControleur.recevoirMessage();
+            bogues_text.setText(briqueControleur.recevoirMessage());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {

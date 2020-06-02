@@ -6,7 +6,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
@@ -84,25 +87,43 @@ public class BriqueControleur implements Parcelable {
     }
 
     public void envoyerMessage(byte message) throws InterruptedException, IOException {
+        Thread.sleep(500);
         OutputStreamWriter outputMessage = new OutputStreamWriter(socketEV3.getOutputStream());
         outputMessage.write(message);
         outputMessage.flush();
-        Thread.sleep(1000);
     }
 
-    public int recevoirMessage() throws InterruptedException, IOException {
-        InputStreamReader inputMessage = new InputStreamReader(socketEV3.getInputStream(),"UTF-8");
+    public String recevoirMessage() throws InterruptedException, IOException {
+        int bytes; // bytes returned from read()
+        byte[] buffer = new byte[256];  // buffer store for the stream
 
+        //InputStreamReader inputMessage = new InputStreamReader(socketEV3.getInputStream());
+        DataInputStream inputMessage = new DataInputStream(socketEV3.getInputStream());
+
+        Thread.sleep(500);
+
+        this.envoyerMessage((byte) 9);
+
+        bytes = inputMessage.read(buffer);
+        String readMessage = new String(buffer, 0, bytes);
+
+        return readMessage;
+        // Send the obtained bytes to the UI Activity
+
+        /*this.envoyerMessage((byte) 9);
+
+        Log.e("COUCOU",  "1");
         int c = inputMessage.read();
-        
+        Log.e("COUCOU",  "2");
         // en UTF-8 le premier octet indique le codage
         c = inputMessage.read();
+        Log.e("COUCOU",  "3");
         while(c != -1){
             Log.e("COUCOU", (char)c + "");
             c = inputMessage.read();
         }
-
-        return inputMessage.read();
+        Log.e("COUCOU",  "4");
+        return inputMessage.read();*/
     }
 
     /////////////////Parcelable/////////////////
