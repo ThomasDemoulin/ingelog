@@ -16,6 +16,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginBottom="16dp"
         android:hint="Adresse MAC du robot"
+        android:text="00:16:53:80:46:E8"
         app:layout_constraintBottom_toTopOf="@+id/connect_connexion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
