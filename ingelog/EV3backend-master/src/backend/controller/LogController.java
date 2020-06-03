@@ -1,5 +1,9 @@
 package backend.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 //import java.io.File;
 //import java.io.FileInputStream;
 //import java.io.FileNotFoundException;
@@ -16,15 +20,20 @@ public class LogController {
 	}
 	
 	public String getLog() {
-//		String file;
-//		tant que (File fileEntry : folder.listFiles()){
-//			listFiles.add(fileEntry);
-//		}
-//		
-//		file = convertToString(listeFiles(folder));
-//
-//		retourne file;
-		return "BT";
+		String data = "";
+		try {
+			File myObj = new File("filename.txt");
+			Scanner myReader = new Scanner(myObj);
+			while (myReader.hasNextLine()) {
+				data += myReader.nextLine();
+				System.out.println(data);
+			}
+		  myReader.close();
+		} catch (FileNotFoundException e) {
+		  System.out.println("An error occurred.");
+		  e.printStackTrace();
+		}
+		return data;
 	}
 	
 }

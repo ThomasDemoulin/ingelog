@@ -31,7 +31,7 @@ public class MainRobotEV3 {
     	connect();
     	boolean stop_app = true;
     	VehiculeController vehiculeCrl = new VehiculeController();
-    	//LogController logCtrl = new LogController(logger);
+    	LogController logCtrl = new LogController(logger);
     	
     	final Logger logger = Logger.getLogger(backend.controller.VehiculeController.class);
     	
@@ -78,10 +78,14 @@ public class MainRobotEV3 {
     				case 8:
     					vehiculeCrl.auto();
     					break;
-    				case 9:
-//    					logCtrl.getLog();
-//    					out.writeChars("BITE");
-    					logger.error("test");
+    				case 9:			
+    					try {
+    						System.out.println(logCtrl.getLog());
+    						out.writeChars("TEST");
+    						out.close();
+    					}catch(Exception e) {
+    						logger.error(e);
+    					}
     					break;
 				}
     		}catch (IOException ioe) {
