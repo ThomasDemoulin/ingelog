@@ -41,7 +41,7 @@ public class Connect extends AppCompatActivity {
                 //Création de la connexion Bluetooth
                 BriqueControleur briqueControleur = new BriqueControleur(connect_mac.getText() + "");
                 try {
-                    if (!briqueControleur.connexionEV3()) {
+                    if (briqueControleur.connexionEV3()) {
                         throw new Exception();
                     }
                     Logger.ecrireCommande("Connexion au robot réussie", Connect.this);

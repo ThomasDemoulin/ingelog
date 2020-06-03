@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import Controleur.BriqueControleur;
 import Outils.Logger;
 
 public class Menu extends AppCompatActivity {
@@ -23,7 +22,6 @@ public class Menu extends AppCompatActivity {
         //Récupération de l'intent
         Intent intent = getIntent();
         final Boolean admin = intent.getBooleanExtra("admin",true);
-        final BriqueControleur briqueControleur = intent.getParcelableExtra("briqueControleur");
 
         //On charge le layout admin ou user en fonction de l'intent
         if(admin){
@@ -41,10 +39,9 @@ public class Menu extends AppCompatActivity {
         //Création des listeners
         menu_robot.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
-                Logger.ecrireCommande("Accession à la télécommande", Menu.this);
-                Intent intent=new Intent().setClass(Menu.this, Telecommande.class);
+                Logger.ecrireCommande("Se connecter au robot", Menu.this);
+                Intent intent=new Intent().setClass(Menu.this, Connect.class);
                 intent.putExtra("admin", admin);
-                intent.putExtra("briqueControleur", briqueControleur);
                 startActivity(intent);
             }
         });
@@ -54,7 +51,6 @@ public class Menu extends AppCompatActivity {
                 public void onClick(View v) {
                     Logger.ecrireCommande("Voir l'historique des commandes", Menu.this);
                     Intent intent = new Intent().setClass(Menu.this, Commandes.class);
-                    intent.putExtra("briqueControleur", briqueControleur);
                     startActivity(intent);
                 }
             });
@@ -63,7 +59,6 @@ public class Menu extends AppCompatActivity {
                 public void onClick(View v) {
                     Logger.ecrireCommande("Voir l'historique des bogues", Menu.this);
                     Intent intent = new Intent().setClass(Menu.this, Bogues.class);
-                    intent.putExtra("briqueControleur", briqueControleur);
                     startActivity(intent);
                 }
             });
