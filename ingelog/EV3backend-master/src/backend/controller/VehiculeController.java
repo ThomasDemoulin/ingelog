@@ -16,7 +16,11 @@ import backend.metier.CapteurUltrason;
 import backend.metier.Moteur;
 import etats.EtatArret;
 import etats.EtatAvance;
+import etats.EtatAvanceDroite;
+import etats.EtatAvanceGauche;
 import etats.EtatRecule;
+import etats.EtatReculeDroite;
+import etats.EtatReculeGauche;
 import etats.EtatRobot;
 
 /**
@@ -42,7 +46,11 @@ public class VehiculeController extends Thread {
     private EtatRobot etatCourant;
     private EtatRobot etatArret;
     private EtatRobot etatAvance;
-    private EtatRobot etatRecul;
+    private EtatRobot etatRecule;
+    private EtatRobot etatAvanceGauche;
+    private EtatRobot etatAvanceDroite;
+    private EtatRobot etatReculeGauche;
+    private EtatRobot etatReculeDroite;
     
     private ArrayList<EtatRobot> arrayEtat;
     
@@ -67,10 +75,14 @@ public class VehiculeController extends Thread {
     	
     	this.etatCourant 	= new EtatArret();
     	
-    	this.etatArret 		= new EtatArret();
-    	this.etatAvance		= new EtatAvance();
-    	this.etatRecul		= new EtatRecule();
-    	
+    	this.etatArret 			= new EtatArret();
+    	this.etatAvance			= new EtatAvance();
+    	this.etatAvanceGauche 	= new EtatAvanceGauche();
+    	this.etatAvanceDroite 	= new EtatAvanceDroite();
+    	this.etatReculeGauche 	= new EtatReculeGauche();
+    	this.etatReculeDroite 	= new EtatReculeDroite();
+    	this.etatRecule 		= new EtatRecule();
+
     	this.arrayEtat = new ArrayList<EtatRobot>();
  
 	}
@@ -78,23 +90,24 @@ public class VehiculeController extends Thread {
     public void avancer() throws InterruptedException {
     	this.moteurGauche.getMoteur().startSynchronization();
     	
-    	if(	etatCourant instanceof EtatArret ) {
+    	if(	this.etatCourant instanceof EtatArret ||
+    		this.etatCourant instanceof EtatRecule) {
     		
     		this.vitesse = 50;
     		
     		this.moteurGauche.avancer(this.vitesse);
     		this.moteurDroit.avancer(this.vitesse);
     		
-    		etatCourant = etatAvance;
-    		sauverEtat(etatCourant);
+    		this.etatCourant = this.etatAvance;
+    		sauverEtat(this.etatCourant);
     		
-    	}else if( etatCourant instanceof EtatAvance) {
+    	}else if( this.etatCourant instanceof EtatAvance) {
 
     		this.moteurGauche.accelerer();
     		this.moteurDroit.accelerer();
     		
-    		etatCourant = etatAvance;
-    		sauverEtat(etatCourant);
+    		this.etatCourant = this.etatAvance;
+    		sauverEtat(this.etatCourant);
     	}
     	this.moteurGauche.getMoteur().endSynchronization();
 
@@ -111,8 +124,8 @@ public class VehiculeController extends Thread {
   		this.moteurDroit.reculer(this.vitesse);
 		this.moteurGauche.reculer(this.vitesse);
 		
-		etatCourant = etatRecul;
-		sauverEtat(etatCourant);
+		this.etatCourant = this.etatRecule;
+		sauverEtat(this.etatCourant);
 		
     	this.moteurGauche.getMoteur().endSynchronization();
   
@@ -122,15 +135,32 @@ public class VehiculeController extends Thread {
     	
     	int oldVitesse = this.moteurGauche.getVitesse();
     	
-    	if(	etatCourant instanceof EtatAvance ) {
+    	if(	this.etatCourant instanceof EtatAvance ) {
+    		
         	this.moteurGauche.tourner();
+        	
+        	this.etatCourant = this.etatAvanceDroite;
+        	sauverEtat(this.etatCourant);
+        	
         	this.moteurGauche.avancer(oldVitesse);
         	this.moteurDroit.avancer(oldVitesse);
         	
-    	}else if(etatCourant instanceof EtatRecule) {
+        	this.etatCourant = this.etatAvance;
+        	sauverEtat(this.etatCourant);
+        	
+    	}else if(this.etatCourant instanceof EtatRecule ||
+    			this.etatCourant instanceof EtatReculeGauche) {
+    		
     		this.moteurGauche.tourner();
+    		
+    		this.etatCourant = this.etatReculeDroite;
+        	sauverEtat(this.etatCourant);
+    		
         	this.moteurGauche.reculer(oldVitesse);
         	this.moteurDroit.reculer(oldVitesse);
+        	
+        	this.etatCourant = this.etatRecule;
+        	sauverEtat(this.etatCourant);
     	}
     }
 
@@ -138,15 +168,32 @@ public class VehiculeController extends Thread {
     	
     	int oldVitesse = this.moteurDroit.getVitesse();
 
-    	if(	etatCourant instanceof EtatAvance ) {
+    	if(	this.etatCourant instanceof EtatAvance ) {
+    		
 	    	this.moteurDroit.tourner();
+	    	
+	    	this.etatCourant = this.etatAvanceGauche;
+			sauverEtat(this.etatCourant);
+			
 			this.moteurDroit.avancer(oldVitesse);
 			this.moteurGauche.avancer(oldVitesse);
 			
-    	}else if(etatCourant instanceof EtatRecule) {
+			this.etatCourant = this.etatAvance;
+			sauverEtat(this.etatCourant);
+			
+    	}else if(this.etatCourant instanceof EtatRecule || 
+    			this.etatCourant instanceof EtatReculeDroite) {
+    		
 	    	this.moteurDroit.tourner();
+	    	
+	    	this.etatCourant = this.etatReculeDroite;
+        	sauverEtat(etatCourant);
+        	
 			this.moteurDroit.reculer(oldVitesse);
 			this.moteurGauche.reculer(oldVitesse);
+			
+			this.etatCourant = this.etatRecule;
+			sauverEtat(this.etatCourant);
     	}
 
     }
@@ -156,8 +203,8 @@ public class VehiculeController extends Thread {
     	this.moteurGauche.decelerrer();
     	this.moteurDroit.decelerrer();
     	
-    	this.etatCourant = etatAvance;
-    	sauverEtat(etatCourant);
+    	this.etatCourant = this.etatAvance;
+    	sauverEtat(this.etatCourant);
     	
     	this.moteurGauche.getMoteur().endSynchronization();
     }
@@ -172,8 +219,8 @@ public class VehiculeController extends Thread {
 
     	Thread.sleep(500);
     	
-    	etatCourant = etatArret;
-		sauverEtat(etatCourant);
+    	this.etatCourant = this.etatArret;
+		sauverEtat(this.etatCourant);
     }
     
     public boolean isModeAutoActif() {
@@ -181,12 +228,16 @@ public class VehiculeController extends Thread {
     }
     
     public void auto() throws InterruptedException {
-    	this.isModeAutoActif = true;
+    	if(this.isModeAutoActif == false) {
+    		this.isModeAutoActif = true;
 
-    	capteurDistance.start();
-    	while(capteurDistance.isTooClose()) {}
-    	
-    	this.avancer();
+        	capteurDistance.start();
+        	while(capteurDistance.isTooClose()) {}
+        	
+        	this.avancer();
+    	}else {
+    		this.isModeAutoActif = false;
+    	}
     }
 
 	public int getVitesse() {
@@ -195,7 +246,7 @@ public class VehiculeController extends Thread {
 	
 	public void sauverEtat(EtatRobot etatCourantRobot) {
 		arrayEtat.add(etatCourantRobot);
-//		logger.info(etatCourantRobot.getEtat());
+		System.out.println(etatCourantRobot.getEtat());
 	}
 	
 	public EtatRobot getEtat() {
