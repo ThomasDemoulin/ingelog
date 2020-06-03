@@ -2,9 +2,6 @@
 <Configuration package="log4j.test" 
                status="WARN">
     <Appenders>
-    	<Console name="LogToConsole" target="SYSTEM_OUT">
-            <PatternLayout pattern="%msg%n"/>
-        </Console>
         <File name="LogToFile" fileName="app.log">
       		<PatternLayout>
       	 		<Pattern>%m%n</Pattern>
@@ -15,7 +12,6 @@
     <Loggers>
         <Root level="trace">
             <AppenderRef ref="LogToFile"/>
-            <AppenderRef ref="LogToConsole"/>
         </Root>
     </Loggers>
 </Configuration>

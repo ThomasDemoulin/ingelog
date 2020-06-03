@@ -36,10 +36,8 @@ public class MainRobotEV3 {
     	LogController logCtrl = new LogController(logger);
     	
     	final Logger logger = Logger.getLogger(backend.controller.VehiculeController.class);
-    	Date aujourdhui = new Date();
-        DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-            DateFormat.SHORT,
-            DateFormat.SHORT);
+    	
+    	System.out.println("Connexion reussie");
     	
     	while(stop_app)
     	{

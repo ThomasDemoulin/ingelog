@@ -239,7 +239,7 @@ public class Telecommande extends AppCompatActivity {
             BHistorique.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Logger.ecrireCommande("Voir l'historique des commandes", Telecommande.this);
-                    Intent intent = new Intent().setClass(Telecommande.this, Commandes.class);
+                    Intent intent = new Intent().setClass(Telecommande.this, Bogues.class);
                     intent.putExtra("briqueControleur", briqueControleur);
                     startActivity(intent);
                 }
