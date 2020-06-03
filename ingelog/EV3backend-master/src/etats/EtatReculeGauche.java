@@ -1,13 +1,12 @@
 package etats;
 
-public class etatPassageModeAutomatique implements EtatRobot {
+public class EtatReculeGauche implements EtatRobot {
 
 	@Override
 	public String getEtat() {
 		// TODO Auto-generated method stub
-		return "Etat : mode automatique";
+		return "Etat : recule gauche";
 	}
 	
 	
-
 }
