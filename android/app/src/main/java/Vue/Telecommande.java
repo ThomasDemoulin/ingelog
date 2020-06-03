@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.github.anastr.speedviewlib.SpeedView;
 import Controleur.BriqueControleur;
+import Outils.Logger;
 
 import java.io.IOException;
 
@@ -69,6 +70,7 @@ public class Telecommande extends AppCompatActivity {
         BAvancer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logger.ecrireCommande("Avancer", Telecommande.this);
                 if (vitesse == 0 || vitesse == -1) {
                     vitesse = 1;
                     vitesseRobot.setText("Vitesse 1");
@@ -88,6 +90,7 @@ public class Telecommande extends AppCompatActivity {
         BAccelerer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logger.ecrireCommande("Accelerer", Telecommande.this);
                 if (vitesse > 0 && vitesse <= 4) {
                     vitesse += 1;
                     vitesseRobot.setText("Vitesse " + vitesse);
@@ -108,6 +111,7 @@ public class Telecommande extends AppCompatActivity {
         BRalentir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logger.ecrireCommande("Ralentir", Telecommande.this);
                 if (vitesse > 1 && vitesse <= 5) {
                     vitesse -= 1;
                     vitesseRobot.setText("Vitesse " + vitesse);
@@ -127,6 +131,7 @@ public class Telecommande extends AppCompatActivity {
         BReculer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logger.ecrireCommande("Reculer", Telecommande.this);
                 if (vitesse >= 0 ) {
                     vitesse = -1;
                     vitesseRobot.setText("Vitesse -1");
@@ -145,6 +150,7 @@ public class Telecommande extends AppCompatActivity {
         BDroite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logger.ecrireCommande("Droite", Telecommande.this);
                 try {
                     briqueControleur.envoyerMessage((byte) 3);
                 } catch (InterruptedException e) {
@@ -159,6 +165,7 @@ public class Telecommande extends AppCompatActivity {
         BGauche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logger.ecrireCommande("Gauche", Telecommande.this);
                 try {
                     briqueControleur.envoyerMessage((byte) 4);
                 } catch (InterruptedException e) {
@@ -175,6 +182,7 @@ public class Telecommande extends AppCompatActivity {
         BArreter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logger.ecrireCommande("Arrêter", Telecommande.this);
                 if (vitesse != 0) {
                     vitesse = 0;
                     vitesseRobot.setText("Vitesse 0");
@@ -193,6 +201,7 @@ public class Telecommande extends AppCompatActivity {
         BEteindre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Logger.ecrireCommande("Eteindre", Telecommande.this);
                 try {
                     briqueControleur.envoyerMessage((byte) 7);
                 } catch (InterruptedException e) {
@@ -229,6 +238,7 @@ public class Telecommande extends AppCompatActivity {
         if(admin) {
             BHistorique.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    Logger.ecrireCommande("Voir l'historique des bogues", Telecommande.this);
                     Intent intent = new Intent().setClass(Telecommande.this, Bogues.class);
                     intent.putExtra("briqueControleur", briqueControleur);
                     startActivity(intent);

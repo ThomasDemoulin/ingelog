@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import Outils.Logger;
+
 public class Menu extends AppCompatActivity {
 
     Button menu_robot;
@@ -37,6 +39,7 @@ public class Menu extends AppCompatActivity {
         //Création des listeners
         menu_robot.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
+                Logger.ecrireCommande("Se connecter au robot", Menu.this);
                 Intent intent=new Intent().setClass(Menu.this, Connect.class);
                 intent.putExtra("admin", admin);
                 startActivity(intent);
@@ -46,6 +49,7 @@ public class Menu extends AppCompatActivity {
         if(admin) {
             menu_commandes.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    Logger.ecrireCommande("Voir l'historique des commandes", Menu.this);
                     Intent intent = new Intent().setClass(Menu.this, Commandes.class);
                     startActivity(intent);
                 }
@@ -53,6 +57,7 @@ public class Menu extends AppCompatActivity {
 
             menu_bogues.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+                    Logger.ecrireCommande("Voir l'historique des bogues", Menu.this);
                     Intent intent = new Intent().setClass(Menu.this, Bogues.class);
                     startActivity(intent);
                 }
@@ -61,6 +66,7 @@ public class Menu extends AppCompatActivity {
 
         menu_deconnexion.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
+                Logger.ecrireCommande("Déconnexion", Menu.this);
                 finish();
             }
         });

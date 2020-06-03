@@ -10,6 +10,7 @@ import android.widget.Button;
 import java.io.IOException;
 
 import Controleur.BriqueControleur;
+import Outils.Logger;
 
 public class Bogues extends AppCompatActivity {
     Button bogues_retour;
@@ -38,6 +39,7 @@ public class Bogues extends AppCompatActivity {
         //Création des listeners
         bogues_retour.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
+                Logger.ecrireCommande("Retour au menu", Bogues.this);
                 finish();
             }
         });

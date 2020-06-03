@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import Controleur.BriqueControleur;
+import Outils.Logger;
 
 public class Connect extends AppCompatActivity {
 
@@ -36,6 +37,7 @@ public class Connect extends AppCompatActivity {
         //Création des listeners
         connect_connexion.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
+                Logger.ecrireCommande("Tentative de connexion au robot", Connect.this);
                 //Création de la connexion Bluetooth
                 BriqueControleur briqueControleur = new BriqueControleur(connect_mac.getText() + "");
                 try {
@@ -47,6 +49,7 @@ public class Connect extends AppCompatActivity {
                     intent.putExtra("briqueControleur", briqueControleur);
                     startActivity(intent);
                 } catch (Exception e) {
+                    Logger.ecrireCommande("Echec de connexion au robot", Connect.this);
                     connect_erreur.setText("Adresse invalide");
                 }
             }
@@ -54,6 +57,7 @@ public class Connect extends AppCompatActivity {
 
         connect_retour.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
+                Logger.ecrireCommande("Retour au menu", Connect.this);
                 finish();
             }
         });
