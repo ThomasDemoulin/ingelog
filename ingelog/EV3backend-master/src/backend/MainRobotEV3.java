@@ -2,8 +2,6 @@ package backend;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Date;
 
 import org.apache.log4j.Logger;
 
@@ -36,10 +34,6 @@ public class MainRobotEV3 {
     	LogController logCtrl = new LogController(logger);
     	
     	final Logger logger = Logger.getLogger(backend.controller.VehiculeController.class);
-    	Date aujourdhui = new Date();
-        DateFormat shortDateFormat = DateFormat.getDateTimeInstance(
-            DateFormat.SHORT,
-            DateFormat.SHORT);
     	
     	while(stop_app)
     	{
@@ -48,52 +42,32 @@ public class MainRobotEV3 {
 				switch(commande)
 				{
     				case 1: 
-    					try {
-    						vehiculeCrl.avancer();
-    					} catch(InterruptedException e) {
-    						System.out.println("An error occurred. Check the logs for more infos");
-    						logger.error(e);
-    					}
-    					break;
+    					vehiculeCrl.avancer();
+	    				break;
     				case 2:
-    					try {
-    						vehiculeCrl.reculer();
-    					} catch(InterruptedException e) {
-    						System.out.println("An error occurred. Check the logs for more infos");
-    						logger.error(e);
-    					}
+    					vehiculeCrl.reculer();
     					break;
     				case 3:
-						try {
-							vehiculeCrl.tournerDroite();
-						} catch (InterruptedException e) {
-							System.out.println("An error occurred. Check the logs for more infos");
-							logger.error(e);
-						}
+					try {
+						vehiculeCrl.tournerDroite();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
     					break;
     				case 4:
-						try {
-							vehiculeCrl.tournerGauche();
-						} catch (InterruptedException e) {
-							System.out.println("An error occurred. Check the logs for more infos");
-							logger.error(e);
-						}
+					try {
+						vehiculeCrl.tournerGauche();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
     					break;
     				case 5:
-    					try {
-        					vehiculeCrl.decelerer();
-    					} catch(InterruptedException e) {
-    						System.out.println("An error occurred. Check the logs for more infos");
-    						logger.error(e);
-    					}
+    					vehiculeCrl.decelerer();
     					break;
     				case 6:
-    					try {
-    						vehiculeCrl.arret();
-    					} catch(InterruptedException e) {
-    						System.out.println("An error occurred. Check the logs for more infos");
-    						logger.error(e);
-    					}
+    					vehiculeCrl.arret();
     					break;
     				case 7 :
     					stop_app = false;
@@ -102,27 +76,20 @@ public class MainRobotEV3 {
     					break;
     					
     				case 8:
-    					try {
-        					vehiculeCrl.auto();
-    					} catch(InterruptedException e) {
-    						System.out.println("An error occurred. Check the logs for more infos");
-    						logger.error(e);
-    					}
+    					vehiculeCrl.auto();
     					break;
     				case 9:			
     					try {
-    						String logs = logCtrl.getLog();
-    						out.writeChars(logs);
+    						System.out.println(logCtrl.getLog());
+    						out.writeChars("TEST");
     						out.close();
     					}catch(Exception e) {
-    						System.out.println("An error occurred. Check the logs for more infos");
     						logger.error(e);
     					}
     					break;
 				}
     		}catch (IOException ioe) {
     			System.out.println("IO Exception readInt");
-    			stop_app = false;
     		}
     	}
     }

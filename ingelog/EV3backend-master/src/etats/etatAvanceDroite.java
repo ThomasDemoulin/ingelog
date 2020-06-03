@@ -1,6 +1,6 @@
 package etats;
 
-public class EtatAvanceDroite implements EtatRobot {
+public class etatAvanceDroite implements EtatRobot {
 
 	@Override
 	public String getEtat() {

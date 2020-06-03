@@ -22,15 +22,16 @@ public class LogController {
 	public String getLog() {
 		String data = "";
 		try {
-			File myObj = new File("app.log");
+			File myObj = new File("filename.txt");
 			Scanner myReader = new Scanner(myObj);
 			while (myReader.hasNextLine()) {
 				data += myReader.nextLine();
+				System.out.println(data);
 			}
-			myReader.close();
+		  myReader.close();
 		} catch (FileNotFoundException e) {
-		  System.out.println("An error occurred. Check the logs for more infos");
-		  logger.error(e);
+		  System.out.println("An error occurred.");
+		  e.printStackTrace();
 		}
 		return data;
 	}
