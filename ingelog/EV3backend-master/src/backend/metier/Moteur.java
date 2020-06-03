@@ -10,10 +10,10 @@ public class Moteur {
 	private RegulatedMotor moteur;
 	private int vitesse;
 
-	public Moteur(RegulatedMotor moteur, int v) {
+	public Moteur(RegulatedMotor moteur) {
 		// Constructeur
 		this.moteur = moteur;
-		this.vitesse = v;
+		this.vitesse = 50;
 	}
 	
 	public void setVitesse(int v) {
@@ -25,6 +25,10 @@ public class Moteur {
 		return this.vitesse;
 	}
 	
+	public int getMoteurVitesse() {
+		return this.moteur.getSpeed();
+	}
+	
 	public RegulatedMotor getMoteur() {
 		return this.moteur;
 	}
@@ -34,26 +38,25 @@ public class Moteur {
 	}
 	
 	public void avancer(int v){
-		this.setVitesse(v);
+		setVitesse(v);
 		this.moteur.forward();
 	}
 
 	public void reculer(int v){
+		setVitesse(v);
 		if (this.moteur.isMoving()) {
 			this.moteur.stop();
-			this.setVitesse(v);
 			this.moteur.backward();
 		}
 		else {
-			this.setVitesse(v);
 			this.moteur.backward();
 		}
 
 	}
 
-	public void accelerer(){
+	public void accelerer(int v){
 		if(this.moteur.isMoving()) {
-			this.setVitesse(this.vitesse + 50);
+			this.setVitesse(this.vitesse + v);
 			this.moteur.forward();
 		}
 		
@@ -79,6 +82,7 @@ public class Moteur {
 
 
 	public void stop() {
+		this.setVitesse(0);
 		this.moteur.stop();
 		
 	}

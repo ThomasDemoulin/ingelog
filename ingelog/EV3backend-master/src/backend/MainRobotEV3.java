@@ -35,7 +35,7 @@ public class MainRobotEV3 {
     	VehiculeController vehiculeCrl = new VehiculeController();
     	LogController logCtrl = new LogController(logger);
     	
-    	final Logger logger = Logger.getLogger(backend.controller.VehiculeController.class);
+    	final Logger logger = Logger.getLogger(backend.MainRobotEV3.class);
     	
     	System.out.println("Connexion reussie");
     	

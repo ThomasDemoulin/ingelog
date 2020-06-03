@@ -4,7 +4,7 @@ public class EtatArret implements EtatRobot {
 	
 	@Override
 	public String getEtat() {
-		return "Etat : arret ";
+		return "arret ";
 	}
 
 

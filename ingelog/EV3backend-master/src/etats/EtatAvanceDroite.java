@@ -5,7 +5,7 @@ public class EtatAvanceDroite implements EtatRobot {
 	@Override
 	public String getEtat() {
 		// TODO Auto-generated method stub
-		return "Etat : avance droite";
+		return "avance droite";
 	}
 	
 	
