@@ -52,7 +52,7 @@ public class Login extends AppCompatActivity {
                     }else{
                         Logger.ecrireCommande("Connexion en tant qu'utilisateur", Login.this);
                     }
-                    Intent intent=new Intent().setClass(Login.this, Menu.class);
+                    Intent intent=new Intent().setClass(Login.this, Connect.class);
                     intent.putExtra("admin", util.getAdmin());
                     startActivity(intent);
                 }else{
