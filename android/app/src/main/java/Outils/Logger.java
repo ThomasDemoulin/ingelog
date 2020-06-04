@@ -5,14 +5,21 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.content.*;
+import android.util.Log;
 
 public class Logger {
+    //Classe permettant d'écrire ou de lire les logs côté Android.
+
     private static String fichierCommandes = "commandes.txt";
 
+    //Cette méthode n'est appelée qu'une seule fois : lors de l'ouverture de l'application afin de
+    // créer le fichier d'historique des commandes
     public static void init(Context context) throws FileNotFoundException {
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fichierCommandes, Context.MODE_PRIVATE));
     }
 
+    //Cette méthode est appelée à chaque clic sur un bouton de l'utilisateur. Elle permet
+    // l'écriture du log dans le fichier commandes.txt
     public static void ecrireCommande(String commande, Context context){
         try {
             ArrayList<String> commandes = lireCommandes(context);
@@ -28,6 +35,9 @@ public class Logger {
         }
     }
 
+
+    //Cette méthode est appelée lorsque l'utilisateur souhaite lire l'historique des commandes.
+    // Elle permet la lecture du fichier commandes.txt
     public static ArrayList<String> lireCommandes(Context context){
         ArrayList<String> commandes = new ArrayList<String>();
 
@@ -46,9 +56,9 @@ public class Logger {
             }
         }
         catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.toString());
+            Log.e("Erreur Logger", "File not found: " + e.toString());
         } catch (IOException e) {
-            System.out.println("Can not read file: " + e.toString());
+            Log.e("Erreur Logger", "Can not read file: " + e.toString());
         }
 
         return commandes;

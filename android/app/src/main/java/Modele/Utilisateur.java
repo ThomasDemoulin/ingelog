@@ -1,6 +1,8 @@
 package Modele;
 
 public class Utilisateur {
+    //Cette classe permet de représenter un Utilisateur
+
     private String identifiant;
     private Boolean admin;
 

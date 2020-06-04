@@ -14,6 +14,8 @@ import Controleur.BriqueControleur;
 import Outils.Logger;
 
 public class Bogues extends AppCompatActivity {
+    //Cette classe permet de gérer ce qui sera affiché sur la page Historique des Bogues
+
     Button bogues_retour;
     ListView bogues_listview;
 
@@ -31,6 +33,7 @@ public class Bogues extends AppCompatActivity {
         bogues_listview = (ListView) findViewById(R.id.bogues_listview);
 
         try {
+            //Récupération et affichage des bogues du robot
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, briqueControleur.recevoirMessage());
             bogues_listview.setAdapter(adapter);
         } catch (InterruptedException e) {

@@ -13,6 +13,7 @@ import Controleur.BriqueControleur;
 import Outils.Logger;
 
 public class Connect extends AppCompatActivity {
+    //Cette classe permet de gérer ce qui sera affiché sur la page de Connexion au robot
 
     Button connect_connexion;
     Button connect_retour;
@@ -38,12 +39,16 @@ public class Connect extends AppCompatActivity {
         connect_connexion.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 Logger.ecrireCommande("Tentative de connexion au robot", Connect.this);
+
                 //Création de la connexion Bluetooth
                 BriqueControleur briqueControleur = new BriqueControleur(connect_mac.getText() + "");
                 try {
+                    //Si l'application n'a pas réussi à se connecter à la brique, alors cela
+                    // affiche un mesage d'erreur
                     if (!briqueControleur.connexionEV3()) {
                         throw new Exception();
                     }
+                    //Si l'application a réussi à se connecter, alors on passe à la page de Menu
                     Logger.ecrireCommande("Connexion au robot réussie", Connect.this);
                     Intent intent = new Intent().setClass(Connect.this, Menu.class);
                     intent.putExtra("admin", admin);

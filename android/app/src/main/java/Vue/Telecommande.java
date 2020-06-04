@@ -20,6 +20,7 @@ import java.io.IOException;
 import static android.widget.RelativeLayout.*;
 
 public class Telecommande extends AppCompatActivity {
+    //Cette classe permet de gérer ce qui sera affiché sur la page de Télécommande
 
     //Création des différents boutons et de la connexion
     Button BAvancer ;
@@ -66,12 +67,13 @@ public class Telecommande extends AppCompatActivity {
         }
 
         //Création d'un listener sur le bouton Avancer
-        //On peut également accélérer grâce au bouton Avancer
         BAvancer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logger.ecrireCommande("Avancer", Telecommande.this);
-                if (vitesse == 0 || vitesse == -1) {
+                //On ne peut cliquer sur le bouton Avancer seulement si le robot n'est pas en mode
+                // automatique, et si celui-ci n'avance pas déjà
+                if (!modeAuto.isChecked() && (vitesse == 0 || vitesse == -1)) {
+                    Logger.ecrireCommande("Avancer", Telecommande.this);
                     vitesse = 1;
                     vitesseRobot.setText("Vitesse 1");
                     try {
@@ -80,18 +82,19 @@ public class Telecommande extends AppCompatActivity {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
-                }
+                    }
                 }
             }
         });
 
         //Création d'un listener sur le bouton Accelerer
-        //La vitesse augmente si le robot avance et si celui-ci n'a pas atteint la vitesse maximale
         BAccelerer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logger.ecrireCommande("Accelerer", Telecommande.this);
-                if (vitesse > 0 && vitesse <= 4) {
+                //On ne peut cliquer sur le bouton Accélérer seulement si le robot n'est pas en mode
+                // automatique, si celui-ci avance et qu'il n'a pas atteint la vitesse maximale
+                if (!modeAuto.isChecked() && vitesse > 0 && vitesse <= 4) {
+                    Logger.ecrireCommande("Accelerer", Telecommande.this);
                     vitesse += 1;
                     vitesseRobot.setText("Vitesse " + vitesse);
                     try {
@@ -111,8 +114,10 @@ public class Telecommande extends AppCompatActivity {
         BRalentir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logger.ecrireCommande("Ralentir", Telecommande.this);
-                if (vitesse > 1 && vitesse <= 5) {
+                //On ne peut cliquer sur le bouton Ralentir seulement si le robot n'est pas en mode
+                // automatique, si celui-ci avance et qu'il n'a pas atteint la vitesse minimale
+                if (!modeAuto.isChecked() && vitesse > 1 && vitesse <= 5) {
+                    Logger.ecrireCommande("Ralentir", Telecommande.this);
                     vitesse -= 1;
                     vitesseRobot.setText("Vitesse " + vitesse);
                     try {
@@ -127,12 +132,13 @@ public class Telecommande extends AppCompatActivity {
         });
 
         //Création d'un listener sur le bouton Reculer
-        //On peux également accélérer grâce au bouton Reculer
         BReculer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logger.ecrireCommande("Reculer", Telecommande.this);
-                if (vitesse >= 0 ) {
+                //On ne peut cliquer sur le bouton Reculer seulement si le robot n'est pas en mode
+                // automatique, et si celui-ci ne recule pas déjà
+                if (!modeAuto.isChecked() && vitesse >= 0) {
+                    Logger.ecrireCommande("Reculer", Telecommande.this);
                     vitesse = -1;
                     vitesseRobot.setText("Vitesse -1");
                     try {
@@ -150,13 +156,17 @@ public class Telecommande extends AppCompatActivity {
         BDroite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logger.ecrireCommande("Droite", Telecommande.this);
-                try {
-                    briqueControleur.envoyerMessage((byte) 3);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                //On ne peut cliquer sur le bouton Droite seulement si le robot n'est pas en mode
+                // automatique
+                if (!modeAuto.isChecked()) {
+                    Logger.ecrireCommande("Droite", Telecommande.this);
+                    try {
+                        briqueControleur.envoyerMessage((byte) 3);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -165,25 +175,29 @@ public class Telecommande extends AppCompatActivity {
         BGauche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logger.ecrireCommande("Gauche", Telecommande.this);
-                try {
-                    briqueControleur.envoyerMessage((byte) 4);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                //On ne peut cliquer sur le bouton Gauche seulement si le robot n'est pas en mode
+                // automatique
+                if (!modeAuto.isChecked()) {
+                    Logger.ecrireCommande("Gauche", Telecommande.this);
+                    try {
+                        briqueControleur.envoyerMessage((byte) 4);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
 
         //Création d'un listener sur le bouton Arrêter
-        //Envoie simplement l'ordre au robot de s'arrêter
-        //Remet le compteur de vitesse à 0
         BArreter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logger.ecrireCommande("Arrêter", Telecommande.this);
-                if (vitesse != 0) {
+                //On ne peut cliquer sur le bouton Arrêter seulement si le robot n'est pas en mode
+                // automatique, et si celui-ci n'est pas déjà arrêté
+                if (!modeAuto.isChecked() || vitesse != 0) {
+                    Logger.ecrireCommande("Arrêter", Telecommande.this);
                     vitesse = 0;
                     vitesseRobot.setText("Vitesse 0");
                     try {
@@ -201,6 +215,7 @@ public class Telecommande extends AppCompatActivity {
         BEteindre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //On peut cliquer sur le bouton Eteindre à tout moment
                 Logger.ecrireCommande("Eteindre", Telecommande.this);
                 try {
                     briqueControleur.envoyerMessage((byte) 7);

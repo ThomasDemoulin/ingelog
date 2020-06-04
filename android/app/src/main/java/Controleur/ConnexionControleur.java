@@ -11,6 +11,8 @@ public class ConnexionControleur {
         connexionBase = new ConnexionBase(context);
     }
 
+    //Permet de vérifier si les identifiants rentrés par l'utilisateur sont présents dans la base
+    // de données
     public Boolean verifierIdentifiants(String login, String mdp){
         String mdpBase = connexionBase.getMotDePasse(login);
         if(mdpBase == null){

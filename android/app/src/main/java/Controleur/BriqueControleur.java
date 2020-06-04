@@ -21,6 +21,7 @@ import static java.util.UUID.fromString;
  * https://stackoverflow.com/questions/4969053/bluetooth-connection-between-android-and-lego-mindstorm-nxt
  */
 public class BriqueControleur implements Parcelable {
+    //Cette classe permet la communication Bluetooth entre le robot et l'application Android
 
     //Création des éléments de connexion
     static boolean connexionSucces = true;
@@ -86,6 +87,7 @@ public class BriqueControleur implements Parcelable {
         return connexionSucces;
     }
 
+    //Envoyer un message au robot
     public void envoyerMessage(byte message) throws InterruptedException, IOException {
         Thread.sleep(500);
         OutputStreamWriter outputMessage = new OutputStreamWriter(socketEV3.getOutputStream());
@@ -93,19 +95,20 @@ public class BriqueControleur implements Parcelable {
         outputMessage.flush();
     }
 
+    //Recevoir l'historique des bogues du robot
     public String[] recevoirMessage() throws InterruptedException, IOException {
-        int bytes; // bytes returned from read()
-        byte[] buffer = new byte[256];  // buffer store for the stream
+        int bytes;
+        byte[] buffer = new byte[256];
 
         DataInputStream inputMessage = new DataInputStream(socketEV3.getInputStream());
 
+        //Attente pour ne pas spammer la brique
         Thread.sleep(500);
 
         this.envoyerMessage((byte) 9);
 
         bytes = inputMessage.read(buffer);
         String readMessage = new String(buffer, 0, bytes);
-
 
         String[] tableauBogues = readMessage.split("/");
         return tableauBogues;

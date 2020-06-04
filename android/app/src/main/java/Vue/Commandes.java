@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import Outils.Logger;
 
 public class Commandes extends AppCompatActivity {
+    //Cette classe permet de gérer ce qui sera affiché sur la page Historique des Commandes
 
     Button commandes_retour;
     ListView listeCommandes;
@@ -26,13 +27,7 @@ public class Commandes extends AppCompatActivity {
         commandes_retour = (Button) findViewById(R.id.commandes_retour);
         listeCommandes = (ListView) findViewById(R.id.commandes_listview);
 
-        //remplissage de la listView
-
-        ArrayList<String> al = Logger.lireCommandes(this);
-        for(int i = 0; i < al.size(); i++){
-            System.out.println(al.get(i));
-        }
-
+        //Récupération et affichage de l'historique des commandes
         ArrayAdapter<String> itemsAdapter = null;
         itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Logger.lireCommandes(this));
         listeCommandes.setAdapter(itemsAdapter);

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
 public class MySQLiteOpenHelper extends SQLiteOpenHelper {
+    //Cette classe permet la création des tables de la base de données
 
     private String creation = "create table utilisateurs ("
             + "login TEXT PRIMARY KEY,"
@@ -22,15 +23,20 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    //Cette méthode est appeléé lors de la création POUR LA PREMIERE FOIS de la base de données
+    // sur votre téléphone
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        //Création des tables
         sqLiteDatabase.execSQL(creation);
+        //Insertion des tuples
         sqLiteDatabase.execSQL(admin);
         sqLiteDatabase.execSQL(user);
     }
 
+    //Cette méthode est appeléé lors de la montée de version de votre base de données
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        onCreate(sqLiteDatabase);
     }
 }

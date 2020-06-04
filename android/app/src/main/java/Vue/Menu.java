@@ -10,6 +10,7 @@ import Controleur.BriqueControleur;
 import Outils.Logger;
 
 public class Menu extends AppCompatActivity {
+    //Cette classe permet de gérer ce qui sera affiché sur la page de Menu
 
     Button menu_robot;
     Button menu_commandes;
@@ -39,6 +40,8 @@ public class Menu extends AppCompatActivity {
         menu_deconnexion = (Button) findViewById(R.id.menu_deconnexion);
 
         //Création des listeners
+        //Si l'utilisateur clique sur un bouton, alors il est transporté à la page correspondant
+        // à ce bouton
         menu_robot.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 Logger.ecrireCommande("Accession à la télécommande", Menu.this);

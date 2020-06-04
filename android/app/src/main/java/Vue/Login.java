@@ -16,6 +16,7 @@ import Modele.Utilisateur;
 import Outils.Logger;
 
 public class Login extends AppCompatActivity {
+    //Cette classe permet de gérer ce qui sera affiché sur la page de Connexion à l'application
 
     Button login_connexion;
     EditText login_login;
@@ -45,6 +46,8 @@ public class Login extends AppCompatActivity {
         //Création des listeners
         login_connexion.setOnClickListener( new OnClickListener() {
             public void onClick(View v) {
+                //Si l'utilisateur a saisi de bons identifiants, alors il passe à la page de
+                // connexion au robot, sinon un message d'erreur est affiché
                 if(connexionControleur.verifierIdentifiants(login_login.getText().toString(), login_mdp.getText().toString())){
                     Utilisateur util = connexionControleur.getConnexionBase().getUtilisateur(login_login.getText().toString());
                     if(util.getAdmin()){
