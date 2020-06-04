@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.IOException;
+
 import Controleur.BriqueControleur;
 import Outils.Logger;
 
@@ -75,6 +77,13 @@ public class Menu extends AppCompatActivity {
         menu_deconnexion.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 Logger.ecrireCommande("Déconnexion", Menu.this);
+                try {
+                    briqueControleur.envoyerMessage((byte) 7);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 finish();
             }
         });
