@@ -107,8 +107,7 @@ public class BriqueControleur implements Parcelable {
         String readMessage = new String(buffer, 0, bytes);
 
 
-        String[] tableauBogues = new String[1];
-        tableauBogues[0] = readMessage;
+        String[] tableauBogues = readMessage.split("/");
         return tableauBogues;
     }
 

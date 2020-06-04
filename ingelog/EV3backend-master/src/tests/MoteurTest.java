@@ -15,6 +15,7 @@ public class MoteurTest {
 	@Test
 	/**
 	 * Test Mo1
+	 * Vérifie que le moteur est en marche.
 	 * @throws Exception
 	 */
 	public void testAvancer() throws Exception{
@@ -32,6 +33,7 @@ public class MoteurTest {
 	
 	/**
 	 * Test Mo2
+	 * Vérifie que la vitesse du moteur augmente après une accélération.
 	 * @throws Exception
 	 */
 	@Test
@@ -47,6 +49,7 @@ public class MoteurTest {
 	
 	/**
 	 * Test Mo5
+	 * Vérifie que le moteur s'arrete.
 	 * @throws Exception
 	 */
 	@Test
@@ -65,6 +68,7 @@ public class MoteurTest {
 	
 	/**
 	 * Test Mo3
+	 * Vérifie que le moteur enclenche la marche arrière.
 	 * @throws Exception
 	 */
 	@Test
@@ -72,7 +76,7 @@ public class MoteurTest {
 		Moteur moteur = new Moteur(new EV3LargeRegulatedMotor(MotorPort.A));
 		moteur.reculer(VITESSE);
 		if (moteur.getVitesse() == 0){
-			fail("La vitesse devrait a 50");
+			fail("La vitesse devrait etre a 50");
 		}
 		
 		if (!moteur.enAction()){

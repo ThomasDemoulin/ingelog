@@ -27,17 +27,35 @@ public class MainRobotEV3 {
 	private static BTConnection BTConnect;
 	private static int commande=0;
 
+	 /**
+     * Création d'un logger log4j
+     */
 	final static Logger logger = Logger.getLogger(MainRobotEV3.class);
 	
+	/**
+	 * Classe qui est le point d'entré de l'application. C'est ici que les messages de l'application
+	 * android sont recepetionnes. 
+	 */
+	
 	public static void main(String[] args) throws InterruptedException {
-    	connect();
+		/**
+		 * Connexion auprès de l'application Android
+		 */
+		try {
+			connect();
+			System.out.println("Connexion reussie");
+		} catch (Exception e) {
+			logger.error(e);
+		}
+    	
+		/**
+		 * Initialisation du VehiculeController, du LogController et du booléen permettant de 
+		 * stoper l'application. 
+		 */
     	boolean stop_app = true;
     	VehiculeController vehiculeCrl = new VehiculeController();
     	LogController logCtrl = new LogController(logger);
-    	
-    	final Logger logger = Logger.getLogger(backend.MainRobotEV3.class);
-    	
-    	System.out.println("Connexion reussie");
+
     	
     	while(stop_app)
     	{
@@ -110,8 +128,14 @@ public class MainRobotEV3 {
     				case 9:			
     					try {
     						String logs = logCtrl.getLog();
-    						out.writeChars(logs);
-    						out.close();
+    						if(logs == null) {
+    							out.writeChars("An error occured.");
+        						out.close();
+    							stop_app = false;
+    						}else {
+        						out.writeChars(logs);
+        						out.close();
+    						}
     					}catch(Exception e) {
     						System.out.println("An error occurred. Check the logs for more infos");
     						logger.error(e);
@@ -120,10 +144,15 @@ public class MainRobotEV3 {
 				}
     		}catch (IOException ioe) {
     			System.out.println("IO Exception readInt");
+    			logger.error(ioe);
     			stop_app = false;
     		}
     	}
     }
+	
+	/**
+	 * Méthode permettant de se connecter à l'application Android.
+	 */
 	  
 	public static void connect()
 	{  
