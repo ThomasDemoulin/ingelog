@@ -1,23 +1,11 @@
-package backend.controller;
+package tests.mocks;
 
-import lejos.hardware.motor.EV3LargeRegulatedMotor;
-
-import lejos.hardware.port.MotorPort;
-import lejos.hardware.port.SensorPort;
-import lejos.hardware.sensor.EV3UltrasonicSensor;
-import lejos.remote.ev3.RMIRegulatedMotor;
-import lejos.remote.ev3.RemoteEV3;
-import lejos.robotics.RegulatedMotor;
-import lejos.robotics.SampleProvider;
-
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 
-//import backend.MainRobotEV3;
 import backend.metier.CapteurUltrason;
-import backend.metier.Moteur;
 import etats.EtatArret;
 import etats.EtatAvance;
 import etats.EtatAvanceDroite;
@@ -27,20 +15,19 @@ import etats.EtatRecule;
 import etats.EtatReculeDroite;
 import etats.EtatReculeGauche;
 import etats.EtatRobot;
+import lejos.remote.ev3.RMIRegulatedMotor;
+import lejos.remote.ev3.RemoteEV3;
+import tests.mocks.metier.MoteurMock;
 
-/**
- * Classe qui permet d'offrir les différents services de l'application.
- * Les services appels les classes qui s'occupent de l'infrastructure 
- * comme la base de données ou les componsants du robot.
- */
-
-
-
-
-public class VehiculeController extends Thread {
+public class VehiculeControllerMock extends Thread {
 	
-	Moteur moteurDroit;
-	Moteur moteurGauche;
+	/**
+	 * Classe qui permet de Mocker la classe VehiculeController directement
+	 * via l'ordinateur afin d'effectuer des tests
+	 */
+	
+	MoteurMock moteurDroit;
+	MoteurMock moteurGauche;
     CapteurUltrason capteurDistance;
     
     boolean isModeAutoActif; 
@@ -57,34 +44,33 @@ public class VehiculeController extends Thread {
     
     private ArrayList<EtatRobot> arrayEtat;
     
+    RMIRegulatedMotor m1;
+    RMIRegulatedMotor m2;
+    RemoteEV3 ev3;
+    
     /**
      * Création d'un logger log4j
      */
     final static Logger logger = Logger.getLogger(backend.controller.VehiculeController.class);
     final int VITESSE = 50;
  
-    public VehiculeController()
+    public VehiculeControllerMock()
 	{
     	/**
-    	 * Initialisation des capteurs moteurs et distance.
+    	 * Initialisation des moteurs.
     	 */
     	try {
-	    	this.moteurDroit 	= new Moteur(new EV3LargeRegulatedMotor(MotorPort.A));
-	    	this.moteurGauche 	= new Moteur(new EV3LargeRegulatedMotor(MotorPort.B));
-	    	this.capteurDistance = new CapteurUltrason( new EV3UltrasonicSensor(SensorPort.S3));
-	    	this.capteurDistance.setController(this);
+    		ev3 = new RemoteEV3("10.0.1.1");
+
+    		this.m1 = ev3.createRegulatedMotor("A", 'L');
+    		this.m2 = ev3.createRegulatedMotor("B", 'L');
+    		this.moteurDroit  = new MoteurMock(this.m1);
+    		this.moteurGauche = new MoteurMock(this.m2);
+
     	} catch(Exception e) {
-    		System.out.println("ERROR");
+    		System.out.println("erreur");
     		logger.error(e);
 	    }
-    	
-    	/**
-    	 * Synchronisation du moteurDroit avec le moteurGauche.
-    	 */
-    	RegulatedMotor sync[] = {this.moteurDroit.getMoteur()};
-    	this.moteurGauche.getMoteur().synchronizeWith(sync);
-    	
-    	this.isModeAutoActif = false;
     	
     	/**
     	 * Initialisation des différents états du robot.
@@ -105,14 +91,20 @@ public class VehiculeController extends Thread {
  
 	}
     
+    public void deconnection() throws RemoteException {
+    	this.moteurDroit.close();
+    	this.moteurGauche.close();
+    }
+    
+    
     /**
      * Méthode permettant de faire avancer le robot s'il est à l'état Arret ou Recule
      * et fait accélérer le robot si celui-ci est déjà en état Avance.
      * @throws InterruptedException
+     * @throws RemoteException 
      */
 
-    public void avancer() throws InterruptedException {
-    	this.moteurGauche.getMoteur().startSynchronization();
+    public void avancer() throws InterruptedException, RemoteException {
     	
     	if(	this.etatCourant instanceof EtatArret ||
     		this.etatCourant instanceof EtatRecule ) {
@@ -131,18 +123,17 @@ public class VehiculeController extends Thread {
     		this.etatCourant = this.etatAvance;
     		sauverEtat(this.etatCourant);
     	}
-    	this.moteurGauche.getMoteur().endSynchronization();
 
     }
     
     /**
      * Méthode permettant de faire reculer le robot s'il est à l'état Avance ou Arret.
      * @throws InterruptedException
+     * @throws RemoteException 
      */
 
-    public void reculer() throws InterruptedException {
+    public void reculer() throws InterruptedException, RemoteException {
     	
-    	this.moteurGauche.getMoteur().startSynchronization();
     	
     	if(	this.etatCourant instanceof EtatAvance || 
     		this.etatCourant instanceof EtatArret	) {
@@ -158,8 +149,6 @@ public class VehiculeController extends Thread {
 			this.etatCourant = this.etatRecule;
 			sauverEtat(this.etatCourant);
     	}
-    	
-    	this.moteurGauche.getMoteur().endSynchronization();
   
     }
 
@@ -167,9 +156,10 @@ public class VehiculeController extends Thread {
      * Méthode permettant de faire tourner à droite le robot, qu'il soit en état Avance
      * ou en état Recule.
      * @throws InterruptedException
+     * @throws RemoteException 
      */
     
-    public void tournerDroite() throws InterruptedException {
+    public void tournerDroite() throws InterruptedException, RemoteException {
     	
     	int oldVitesse = this.moteurGauche.getVitesse();
     	
@@ -206,9 +196,10 @@ public class VehiculeController extends Thread {
      * Méthode permettant de faire tourner à gauche le robot, qu'il soit en état Avance
      * ou en état Recule.
      * @throws InterruptedException
+     * @throws RemoteException 
      */
     
-    public void tournerGauche() throws InterruptedException {
+    public void tournerGauche() throws InterruptedException, RemoteException {
     	
     	int oldVitesse = this.moteurDroit.getVitesse();
 
@@ -245,64 +236,63 @@ public class VehiculeController extends Thread {
     /**
      * Méthode permettant de réduire la vitesse du robot si celui-ci est en état Avance.
      * @throws InterruptedException
+     * @throws RemoteException 
      */
 
-    public void decelerer() throws InterruptedException {
+    public void decelerer() throws InterruptedException, RemoteException {
     	if(	this.etatCourant instanceof EtatAvance ) {
-	    	this.moteurGauche.getMoteur().startSynchronization();
+
 	    	this.moteurGauche.decelerrer();
 	    	this.moteurDroit.decelerrer();
 	    	
 	    	this.etatCourant = this.etatAvance;
 	    	sauverEtat(this.etatCourant);
 	    	
-	    	this.moteurGauche.getMoteur().endSynchronization();
     	}
     }
     
     /**
      * Méthode permettant d'arreter les moteurs du robot.
      * @throws InterruptedException
+     * @throws RemoteException 
      */
 
-    public void arret() throws InterruptedException {
-    	this.moteurGauche.getMoteur().startSynchronization();
+    public void arret() throws InterruptedException, RemoteException {
+
     	this.moteurDroit.stop();
     	this.moteurGauche.stop();
-    	this.moteurGauche.getMoteur().endSynchronization();
-    	
-    	if(this.isModeAutoActif()) {
-    		this.isModeAutoActif = false;
-    	}
 
-    	Thread.sleep(500);
+    	
+//    	if(this.isModeAutoActif()) {
+//    		this.isModeAutoActif = false;
+//    	}
     	
     	this.etatCourant = this.etatArret;
 		sauverEtat(this.etatCourant);
     }
-    
-    public boolean isModeAutoActif() {
-    	return this.isModeAutoActif;
-    }
+//    
+//    public boolean isModeAutoActif() {
+//    	return this.isModeAutoActif;
+//    }
     
     /**
      * Méthode permettant de lancer le mode automatique du robot.
      * @throws InterruptedException
      */
-    public void auto() throws InterruptedException {
-    	if(this.isModeAutoActif == false) {
-    		this.isModeAutoActif = true;
-    		System.out.println("Mode automatique");
-    		/**
-    		 * A modifier dans le prochaine incrément, on ne peut pas
-    		 * lancer le même thread 2 fois.
-    		 */
-
-			capteurDistance.start();
-        	while(capteurDistance.isTooClose()) {}
-        	this.avancer();
-    	}
-    }
+//    public void auto() throws InterruptedException {
+//    	if(this.isModeAutoActif == false) {
+//    		this.isModeAutoActif = true;
+//    		System.out.println("Mode automatique");
+//    		/**
+//    		 * A modifier dans le prochaine incrément, on ne peut pas
+//    		 * lancer le même thread 2 fois.
+//    		 */
+//
+//			capteurDistance.start();
+//        	while(capteurDistance.isTooClose()) {}
+//        	this.avancer();
+//    	}
+//    }
 	
     /**
      * Méthode permettant d'afficher les différents état du robot et les ajoutes
@@ -314,18 +304,32 @@ public class VehiculeController extends Thread {
 		System.out.println(etatCourantRobot.getEtat());
 	}
 	
-	public int getVitesse() {
-		return this.moteurDroit.getVitesse();
+	public int getVitesse() throws RemoteException {
+		if(this.moteurDroit.getVitesse() == this.moteurGauche.getVitesse()) {
+			return this.moteurDroit.getVitesse();
+		}else {
+			return -1;
+		}
+	}
+	
+	
+	public boolean enArret() throws RemoteException{
+		if(this.moteurDroit.enAction() && 
+				this.moteurGauche.enAction()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	public EtatRobot getEtat() {
 		return this.etatCourant;
 	}
 	
-	public void obstacleDetecte()throws InterruptedException {
-		if(etatCourant instanceof EtatAvance) {
-			this.tournerDroite();
-		}
-	}
+//	public void obstacleDetecte()throws InterruptedException {
+//		if(etatCourant instanceof EtatAvance) {
+//			this.tournerDroite();
+//		}
+//	}
 	
  }

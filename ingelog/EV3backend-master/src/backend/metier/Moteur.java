@@ -22,10 +22,6 @@ public class Moteur {
 	}
 	
 	public int getVitesse() {
-		return this.vitesse;
-	}
-	
-	public int getMoteurVitesse() {
 		return this.moteur.getSpeed();
 	}
 	
